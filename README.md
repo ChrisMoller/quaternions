@@ -44,6 +44,9 @@ such that quaternion + quaternion yields a quaternion, and so on.
 
 | operation |     | effect |
 | --------- | --- | ------ |
-| Quat          operator*();   | $\Rightarrow$ | conjugation: ;[s $-a_0$ $-a_1$ $-a_2$] |
+| Quat          operator*();   | $\Rightarrow$ | conjugation: [s $-a_0$ $-a_1$ $-a_2$] |
+| Quat          operator+();   | $\Rightarrow$ | norm: (magnitide) |
+| Quat          operator-();   | $\Rightarrow$ | negation: [-s $-a_0$ $-a_1$ $-a_2$] |
+| Quat          operator~();   | $\Rightarrow$ | reciprocal: $a^{-1}$ |
 
 
