@@ -17,18 +17,18 @@ such that quaternion + quaternion yields a quaternion, and so on.
 | Constructor |     |construction |
 | ----------- | --- |------------ |
 | Quat () | $\rightarrow$ | null quaternion [0 0 0 0] |
-| Quat (double s) | ==> | scalar quaternion [s 0 0 0] |
-| Quat (double s, double a0, double a1, double a2) | ==> | complete quaternion [s a0 a1 a2] |
+| Quat (double s) | $\rightarrow$ | scalar quaternion [s 0 0 0] |
+| Quat (double s, double a0, double a1, double a2) | $\rightarrow$ | complete quaternion [s a0 a1 a2] |
 
 ### Simple arithmetic
 
 | operation |     | effect |
 | --------- | --- | ------ |
-| Quat operator+(Quat v);   | ==> | Quat + Quat -> Quat |
-| Quat operator-(Quat v);   | ==> | Quat - Quat -> Quat |
-| Quat operator*(Quat v);   | ==> | Quat * Quat -> Quat |
-| Quat operator*(double v); | ==> | Quat * double -> Quat |
-| Quat operator/(Quat v);   | ==> | Quat / Quat -> Quat |
-| Quat operator/(double v); | ==> | Quat / double -> Quat |
+| Quat operator+(Quat v);   | $\rightarrow$ | Quat + Quat -> Quat |
+| Quat operator-(Quat v);   | $\rightarrow$ | Quat - Quat -> Quat |
+| Quat operator*(Quat v);   | $\rightarrow$ | Quat * Quat -> Quat |
+| Quat operator*(double v); | $\rightarrow$ | Quat * double -> Quat |
+| Quat operator/(Quat v);   | $\rightarrow$ | Quat / Quat -> Quat |
+| Quat operator/(double v); | $\rightarrow$ | Quat / double -> Quat |
 
 
