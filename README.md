@@ -62,4 +62,12 @@ invert.
 | bool          operator==(Quat v); | $\Rightarrow$ | equal |
 | bool          operator!=(Quat v); | $\Rightarrow$ | not equal |
 
+The above are just what I've found I need, so far, for graphics work, but if anyone needs
+anything else, I'll be glad to add it.
+
+## Examples
+
+test.cc test all of the above and can be used as boilerplate for usage.  rot.cc is a testcase
+for 3-space rotation.
+
 

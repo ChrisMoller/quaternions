@@ -35,13 +35,9 @@ main ()
   cout << "r / s = " << r/s << endl;
 
   cout << "\nConjugate:\n";
-  Quat starr = *r;
-  Quat stars = *s;
-  cout << "*r = " << starr << endl;
-  cout << "*s = " << stars << endl;
   cout << "*(r*s) = " << *(r*s) << endl;
-  cout << "(*r) * (*s) = " << starr * stars << endl;
-  cout << "(*s) * (*r) = " << stars * starr << endl;
+  cout << "*r * *s = " << *r * *s << endl;
+  cout << "*s * *r = " << *s * *r << endl;
 
   cout << "\nNorm:\n";
   cout << "+r = " << +r << endl;
