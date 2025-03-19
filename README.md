@@ -47,6 +47,12 @@ such that quaternion + quaternion yields a quaternion, and so on.
 | Quat          operator*();   | $\Rightarrow$ | conjugation: [s $-a_0$ $-a_1$ $-a_2$] |
 | Quat          operator+();   | $\Rightarrow$ | norm: (magnitide) |
 | Quat          operator-();   | $\Rightarrow$ | negation: [-s $-a_0$ $-a_1$ $-a_2$] |
-| Quat          operator~();   | $\Rightarrow$ | reciprocal: $a^{-1}$ |
+| Quat          operator~();   | $\Rightarrow$ | invertion: $q^{-1}$ |
+
+These operators don't follow standard C++ significanc.  C++ has no conjugation operator--but
+quaternions don't need a dereferencing operator, so I've mapped '*' to conjugation.  Similarly,
+C++ has no monadic '|', which might have been good as a magnitude operator, but monadic
+'+' isn't relevant to quaternions so is mappped to magnitude.  Similarly, '~' is mapped to
+invert. 
 
 
