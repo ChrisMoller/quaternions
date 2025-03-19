@@ -55,4 +55,11 @@ C++ has no monadic '|', which might have been good as a magnitude operator, but 
 '+' isn't relevant to quaternions so is mappped to magnitude.  Similarly, '~' is mapped to
 invert. 
 
+## Simple comparisons
+
+| operation |     | effect |
+| --------- | --- | ------ |
+| bool          operator==(Quat v); | $\Rightarrow$ | equal |
+| bool          operator!=(Quat v); | $\Rightarrow$ | not equal |
+
 
