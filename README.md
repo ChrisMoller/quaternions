@@ -37,7 +37,13 @@ such that quaternion + quaternion yields a quaternion, and so on.
 | --------- | --- | ------ |
 | Quat operator*=(Quat &v);   | $\Rightarrow$ | Quat *= Quat $\rightarrow$ Quat |
 | Quat operator*=(double &v); | $\Rightarrow$ | Quat *= double $\rightarrow$ Quat |
-| Quat operator/=(Quat &v);   | $\Rightarrow$ | Quat *= Quat $\rightarrow$ Quat |
-| Quat operator/=(double &v); | $\Rightarrow$ | Quat *= double $\rightarrow$ Quat |
+| Quat operator/=(Quat &v);   | $\Rightarrow$ | Quat /= Quat $\rightarrow$ Quat |
+| Quat operator/=(double &v); | $\Rightarrow$ | Quat /= double $\rightarrow$ Quat |
+
+## Simple monadics
+
+| operation |     | effect |
+| --------- | --- | ------ |
+| Quat          operator*();   | $\Rightarrow$ | conjugation: ;[s $-a_0$ $-a_1$ $-a_2$] |
 
 
