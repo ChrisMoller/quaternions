@@ -229,6 +229,12 @@ Quat::qcross (Quat &a, Quat &b)
   return s;
 }
 
+double
+Quat::qang (Quat &a, Quat &b)
+{
+  return acos (Quat::qdot (a, b) / (+a * +b));
+}
+
 ostream& operator<<(ostream& os, const Quat &v)
 {
   os << "[ " << v.a << " " << v.b << " " << v.c << " " << v.d << " ]";

@@ -13,7 +13,11 @@ main ()
 {
   Quat p0 (0, 1, 0, 0);
   Quat p1 (0, 0, 1, 0);
+#if 1
+  double theta = Quat::qang (p0, p1);
+#else
   double theta = acos (Quat::qdot (p0, p1) / (+p0 * +p1));
+#endif
   Quat u =  Quat::qcross (p0, p1);
   
   double tp;
