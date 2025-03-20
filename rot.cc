@@ -36,12 +36,8 @@ main ()
     // do the rotation
     Quat r = q * p0 * ~q;
 
-#if 1
-    cout << Quat::qstr (r) << "   " << +r << "   " <<
-      R2D (Quat::qang (p1, r)) << endl;
-    
-#else
-#endif
+    cout << Quat::qstr (r) << "   " << +r << "   " 
+	 <<  R2D (Quat::qang (p1, r)) << endl;
   }
   cout << "p1 =" << p1 << endl;
 
