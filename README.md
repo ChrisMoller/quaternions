@@ -49,7 +49,7 @@ such that quaternion + quaternion yields a quaternion, and so on.
 | Quat          operator-();   | $\Rightarrow$ | negation: [-s $-a_0$ $-a_1$ $-a_2$] |
 | Quat          operator~();   | $\Rightarrow$ | invertion: $q^{-1}$ |
 
-These operators don't follow standard C++ significanc.  C++ has no conjugation operator--but
+These operators don't follow standard C++ significance.  C++ has no conjugation operator--but
 quaternions don't need a dereferencing operator, so I've mapped '*' to conjugation.  Similarly,
 C++ has no monadic '|', which might have been good as a magnitude operator, but monadic
 '+' isn't relevant to quaternions so is mappped to magnitude.  Similarly, '~' is mapped to
@@ -64,6 +64,14 @@ invert.
 
 The above are just what I've found I need, so far, for graphics work, but if anyone needs
 anything else, I'll be glad to add it.
+
+## Simple comparisons
+
+| operation |     | effect |
+| --------- | --- | ------ |
+| double Quat::qdot (Quat &a, Quat &b);; | $\Rightarrow$ | dot-product |
+| double Quat::qang (Quat &a, Quat &b);; | $\Rightarrow$ | angle subtended by the argument quats |
+| Quat Quat::qcross (Quat &a, Quat &b);; | $\Rightarrow$ | cross-product |
 
 ## Examples
 
