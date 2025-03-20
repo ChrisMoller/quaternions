@@ -212,6 +212,23 @@ Quat::operator!=(Quat v)	// neq
   return s;
 }
 
+string
+Quat::qstr (Quat v)		// stringify
+{
+  char *s;
+  asprintf (&s, "[%#08g [%#08g %#08g %#08g]]", v.a, v.b, v.c, v.d);
+  string t (s);
+  free (s);
+  return t;
+}
+
+ostream&
+operator<<(ostream& os, const Quat &v)
+{
+  os << "[ " << v.a << " " << v.b << " " << v.c << " " << v.d << " ]";
+    return os;
+}
+
 double
 Quat::qdot (Quat &a, Quat &b)
 {
@@ -233,12 +250,6 @@ double
 Quat::qang (Quat &a, Quat &b)
 {
   return acos (Quat::qdot (a, b) / (+a * +b));
-}
-
-ostream& operator<<(ostream& os, const Quat &v)
-{
-  os << "[ " << v.a << " " << v.b << " " << v.c << " " << v.d << " ]";
-    return os;
 }
 
 void

@@ -47,11 +47,14 @@ public:
 
   bool		operator!=(Quat v);	// neq
 
+  static string	qstr (Quat v);		// stringify
+
+  friend ostream& operator<<(ostream& os, const Quat &v);
+
   static double	qdot (Quat &a, Quat &b);
   static Quat	qcross (Quat &a, Quat &b);
   static double	qang (Quat &a, Quat &b);
 
-  friend ostream& operator<<(ostream& os, const Quat &v);
   void show ();
   void show (string l);
 private:

@@ -71,6 +71,8 @@ main ()
   cout << "r qdot r = " << Quat::qdot (r,r) << endl;
   cout << "r qcross s = " << Quat::qcross (r,s) << endl;
   cout << "r qcross r = " << Quat::qcross (r,r) << endl;
+
+  cout << "sring " << Quat::qstr (r) << endl;
   
   return 0;
 }
