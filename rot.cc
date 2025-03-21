@@ -18,10 +18,10 @@ main ()
   Quat p1 (0, 0, 1, 0);
 
   // the angle between those vectors
-  double theta = Quat::qang (p0, p1);
+  double theta = p0.qang (p1);
 
   // the normal of those vectors, the rotation vector
-  Quat u =  Quat::qcross (p0, p1);
+  Quat u =  p0.qcross (p1);
   
   double tp;
 
@@ -36,8 +36,8 @@ main ()
     // do the rotation
     Quat r = q * p0 * ~q;
 
-    cout << Quat::qstr (r) << "   " << +r << "   " 
-	 <<  R2D (Quat::qang (p1, r)) << endl;
+    cout << r.qstr () << "   " << +r << "   " 
+	 <<  R2D (p1.qang (r)) << endl;
   }
   cout << "p1 =" << p1 << endl;
 
