@@ -212,6 +212,18 @@ Quat::operator!=(Quat v)	// neq
   return s;
 }
 
+
+string
+Quat::qstr ()			// stringify
+{
+  char *s;
+  asprintf (&s, "[%#08g [%#08g %#08g %#08g]]", a, b, c, d);
+  string t (s);
+  free (s);
+  return t;
+}
+
+#if 0
 string
 Quat::qstr (Quat v)		// stringify
 {
@@ -221,6 +233,7 @@ Quat::qstr (Quat v)		// stringify
   free (s);
   return t;
 }
+#endif
 
 ostream&
 operator<<(ostream& os, const Quat &v)
@@ -229,10 +242,11 @@ operator<<(ostream& os, const Quat &v)
     return os;
 }
 
+#if 0
 double
 Quat::qdot (Quat &a, Quat &b)
 {
-  return (a.b * b.a) + (a.c * b.c) + (a.d * b.d);
+  return (a.a * b.a) + (a.b * b.b) + (a.c * b.c) + (a.d * b.d);
 }
 
 Quat
@@ -250,6 +264,31 @@ double
 Quat::qang (Quat &a, Quat &b)
 {
   return acos (Quat::qdot (a, b) / (+a * +b));
+}
+#endif
+
+double
+Quat::qdot (Quat &v)
+{
+  return (a * v.a) + (b * v.b) + (c * v.c) + (d * v.d);
+}
+
+Quat
+Quat::qcross (Quat &v)
+{
+  Quat s;
+  s.a = 0.0;
+  s.b = (c * v.d) - (d * v.c);
+  s.c = (d * v.b) - (b * v.d);
+  s.d = (b * v.c) - (c * v.b);
+  return s;
+}
+
+double
+Quat::qang (Quat &v)
+{
+  double dt = (a * v.a) + (b * v.b) + (c * v.c) + (d * v.d);
+  return acos (dt / ((+*this) * +v));
 }
 
 void

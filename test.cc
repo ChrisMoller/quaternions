@@ -1,7 +1,11 @@
 #include <iostream>
+#include <math.h>
 #include "Quat.hh"
 
 using namespace std;
+
+#define D2R(d) (M_PI * (d)/180.0)
+#define R2D(r) (180.0 * (r)/M_PI)
 
 int
 main ()
@@ -67,12 +71,25 @@ main ()
   }
   
   cout << "\nDots and crosses:\n";
+#if 0
   cout << "r qdot s = " << Quat::qdot (r,s) << endl;
   cout << "r qdot r = " << Quat::qdot (r,r) << endl;
   cout << "r qcross s = " << Quat::qcross (r,s) << endl;
   cout << "r qcross r = " << Quat::qcross (r,r) << endl;
+#endif
+  
+  cout << "r.qdot (s) = " << r.qdot (s) << endl;
+  cout << "r.qdot (r) = " << r.qdot (r) << endl;
+  cout << "r.qcross (s) = " << r.qcross (s) << endl;
+  cout << "r.qcross (r) = " << r.qcross (r) << endl;
+  cout << "r.qang (s) = " << R2D (r.qang (s)) << " degrees" << endl;
+  cout << "r.qang (r) = " << R2D (r.qang (r)) << " degrees" << endl;
 
+  cout << "\nStringify:\n";
+#if 0
   cout << "sring " << Quat::qstr (r) << endl;
+#endif
+  cout << "sring " << r.qstr () << endl;
   
   return 0;
 }
