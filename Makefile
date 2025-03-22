@@ -1,5 +1,8 @@
    CFLAGS = -g
   LDFLAGS =
+  GL_LIBS = -lm -lGL -lGLU -lglut
+
+
 
 %.o:%.cc
 	g++ -c $(CFLAGS) $<
@@ -21,6 +24,9 @@ libQuat.so: Quat.cc
 
 libinst: libQuat.so
 	install libQuat.so -m 744 $(HOME)/local/lib64
+
+anim: anim.o
+	g++ -o $@ $(LDFLAGS) $^ $(GL_LIBS)
 
 clean:
 	rm -f *.o *.so
