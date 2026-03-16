@@ -3,7 +3,7 @@
 #include <ios>
 #include <math.h>
 
-#include "Quat.hh"
+#include <libquat/Quat.hh>
 
 using namespace std;
 
