@@ -55,6 +55,14 @@ Quat::Quat (double *v)
   d = v[3];
 }
 
+Quat::Quat (double theta, double *v)
+{
+  a = cos (theta/2.0);
+  b = v[0];
+  c = v[1];
+  d = v[2];
+}
+
 Quat::~Quat ()
 {
 }
@@ -130,7 +138,7 @@ Quat::operator*=(Quat &v)	// multiply-assign
 }
 
 Quat
-Quat::operator*(double v)	// multiply by double
+Quat::operator*(const double v)	// multiply by double
 {
   Quat s;
   s.a = a * v;
@@ -141,7 +149,7 @@ Quat::operator*(double v)	// multiply by double
 }
 
 Quat
-Quat::operator*=(double &v)	// multiply by double assign
+Quat::operator*=(const double v)	// multiply by double assign
 {
   a = a * v;
   b = b * v;
@@ -176,6 +184,16 @@ Quat::operator/(double v)	// divide by double
   s.c = c / v;
   s.d = d / v;
   return s;
+}
+
+Quat
+Quat::operator/=(const double v)	// multiply by double assign
+{
+  a = a / v;
+  b = b / v;
+  c = c / v;
+  d = d / v;
+  return *this;
 }
 
 // I'm using monadic * because quaternions have no use for
@@ -311,6 +329,100 @@ Quat::qang (Quat &v)
 {
   double dt = (a * v.a) + (b * v.b) + (c * v.c) + (d * v.d);
   return acos (dt / ((+*this) * +v));
+}
+
+Rotation *
+Quat::toRotation ()
+{
+  Rotation *h = new Rotation;
+
+  Quat q = *this;
+  q/=+q;			//normalise;
+  fprintf (stderr, "normalised = %g\n", q.a + q.b + q.c + q.d);
+  double q0 = q.a;
+  double q02 = q0 * q0;
+  
+  double q1 = q.b;
+  double q12 = q1 * q1;
+
+  double q2 = q.c;
+  double q22 = q2 * q2;
+
+  double q3 = q.d;
+  double q32 = q3 * q3;
+  
+  h->mtx[0][0] = (2.0 * (q02 + q12)) -1.0;
+  h->mtx[0][1] =  2.0 * (q1 * q2  -  q0 * q3);
+  h->mtx[0][2] =  2.0 * (q1 * q3  +  q0 * q2);
+
+  h->mtx[1][0] =  2.0 * (q1 * q2  +  q0 * q3);
+  h->mtx[1][1] = (2.0 * (q02 + q22)) -1.0;
+  h->mtx[1][2] =  2.0 * (q1 * q3  -  q0 * q1);
+  
+  h->mtx[2][0] =  2.0 * (q1 * q3  -  q0 * q2);
+  h->mtx[2][1] =  2.0 * (q2 * q3  +  q0 * q2);
+  h->mtx[2][2] = (2.0 * (q02 + q32)) -1.0;
+
+  return h;
+}
+
+void
+Rotation::show (ostream& os, const Rotation *obj)
+{
+  double q00 = obj->mtx[0][0];
+  double q01 = obj->mtx[0][1];
+  double q02 = obj->mtx[0][2];
+  double q10 = obj->mtx[1][0];
+  double q11 = obj->mtx[1][1];
+  double q12 = obj->mtx[1][2];
+  double q20 = obj->mtx[2][0];
+  double q21 = obj->mtx[2][1];
+  double q22 = obj->mtx[2][2];
+
+  os << "[[" << q00 << " " << q01 << "  " << q02 << "]  "
+     <<  "[" << q10 << " " << q11 << "  " << q12 << "]  "
+     <<  "[" << q20 << " " << q21 << "  " << q22 << "]]";
+}
+
+void
+Rotation::show ()
+{
+  fprintf (stdout, "[[ %g %g %g]  ",
+	   this->mtx[0][0], this->mtx[0][1], this->mtx[0][2]);
+  fprintf (stdout, " [ %g %g %g]  ",
+	   this->mtx[1][0], this->mtx[1][1], this->mtx[1][2]);
+  fprintf (stdout, " [ %g %g %g]]\n",
+	   this->mtx[2][0], this->mtx[2][1], this->mtx[2][2]);
+}
+
+#define dsign(v) (signbit (v) ? -1.0 : 1.0)
+Quat
+Rotation:: toQuaternion ()
+{
+  double q00 = this->mtx[0][0];
+  double q01 = this->mtx[0][1];
+  double q02 = this->mtx[0][2];
+  double q10 = this->mtx[1][0];
+  double q11 = this->mtx[1][1];
+  double q12 = this->mtx[1][2];
+  double q20 = this->mtx[2][0];
+  double q21 = this->mtx[2][1];
+  double q22 = this->mtx[2][2];
+
+  double ta = 1.0 + q00 + q11 + q22;
+  if (ta < 0.0 && fabs (ta) < 1.0e-10) ta = 0.0;
+  double tb = 1.0 + q00 - q11 - q22;
+  if (tb < 0.0 && fabs (tb) < 1.0e-10) tb = 0.0;
+  double tc = 1.0 - q00 + q11 - q22;
+  if (tc < 0.0 && fabs (tc) < 1.0e-10) tc = 0.0;
+  double td = 1.0 - q00 - q11 + q22;
+  if (td < 0.0 && fabs (td) < 1.0e-10) td = 0.0;
+  double a = sqrt (ta) / 2.0;
+  double b = sqrt (tb) * dsign (q21 - q12) / 2.0; //?
+  double c = sqrt (tc) * dsign (q02 - q20) / 2.0;
+  double d = sqrt (td) * dsign (q10 - q01) / 2.0;
+
+  return Quat (a, b, c, d);
 }
 
 void

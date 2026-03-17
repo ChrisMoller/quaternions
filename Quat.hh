@@ -20,10 +20,29 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <array>
 
 #include <stdio.h>
 
 using namespace std;
+
+// quat <> mx conversion
+// https://www.johndcook.com/blog/2025/05/07/quaternions-and-rotation-matrices/
+
+class Quat;
+
+class Rotation
+{
+public:
+  double mtx[3][3];
+  void show ();
+  Quat	toQuaternion ();
+  static void show (ostream& os, const Rotation *obj);
+  friend ostream& operator<<(ostream& os, const Rotation *obj) {
+    Rotation::show (os, obj);
+    return os; // Enable chaining
+  }
+};
 
 class Quat
 {
@@ -32,6 +51,7 @@ public:
   Quat (double ai, double bi, double ci, double di);
   Quat (double ai);
   Quat (double *v);
+  Quat (double theta, double *v);
   ~Quat ();
 
   Quat 		operator+(Quat v);	// add
@@ -42,12 +62,13 @@ public:
 
   Quat 		operator*(Quat v);	// multiply
   Quat 		operator*=(Quat &v);	// multiply-assign
-  Quat 		operator*(double v);	// multiply by double
-  Quat 		operator*=(double &v);	// multiply by double assign
+  Quat 		operator*(const double v);	// multiply by double
+  Quat		operator*=(const double v);  // multiply by double assign
 
   Quat 		operator/(Quat v);	// divide
   Quat 		operator/=(Quat &v);	// divide-assign
   Quat 		operator/(double v);	// divide by double
+  Quat		operator/=(const double v);  // divide double assign
 
   // I'm using monadic * because quaternions have no use for
   // a dereference operator
@@ -74,7 +95,9 @@ public:
   double	qdot (Quat &v);
   Quat		qcross (Quat &v);
   double	qang (Quat &v);
-  Quat		qrot (Quat &v);
+  Quat		qrot (Quat &v);		// v.qrot (w) rotate v by w
+  
+  Rotation	*toRotation ();
 
   friend ostream& operator<<(ostream& os, const Quat &v);
 

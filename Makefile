@@ -1,7 +1,8 @@
    CFLAGS = -g
   LDFLAGS =
      INCS = -I$(HOME)/.local/include/
-     LIBS = -L $(HOME)/.local/lib64 -lQuat
+#     LIBS = -L $(HOME)/.local/lib64 -lQuat
+#     LIBS = -L . -lQuat
   GL_LIBS = -lm -lGL -lGLU -lglut
 
 
@@ -24,8 +25,8 @@ Quat.o: Quat.cc Quat.hh
 rot: rot.o libQuat.so
 	g++ -o $@ $(LDFLAGS) $< $(LIBS)
 
-test: test.o libQuat.so
-	g++ -o $@ $(LDFLAGS) $^ $(LIBS)
+test: test.o Quat.o
+	g++ -o $@ $(LDFLAGS) $^
 
 anim: anim.o
 	g++ -o $@ $(LDFLAGS) $^ $(GL_LIBS)
