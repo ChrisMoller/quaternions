@@ -338,7 +338,6 @@ Quat::toRotation ()
 
   Quat q = *this;
   q/=+q;			//normalise;
-  fprintf (stderr, "normalised = %g\n", q.a + q.b + q.c + q.d);
   double q0 = q.a;
   double q02 = q0 * q0;
   
