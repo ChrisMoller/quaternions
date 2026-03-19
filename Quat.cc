@@ -22,6 +22,7 @@
 #include <cmath>
 
 #include "Quat.hh"
+#include "eigens.hh"
 
 Quat::Quat ()
 {
@@ -338,18 +339,32 @@ Quat::toRotation ()
 
   Quat q = *this;
   q/=+q;			//normalise;
-  double q0 = q.a;
+  double q0 = q.a;		//w 
   double q02 = q0 * q0;
   
-  double q1 = q.b;
+  double q1 = q.b;		//x 
   double q12 = q1 * q1;
 
-  double q2 = q.c;
+  double q2 = q.c;		//y 
   double q22 = q2 * q2;
 
-  double q3 = q.d;
+  double q3 = q.d;		//z 
   double q32 = q3 * q3;
   
+#if 0
+  // https://search.brave.com/search?q=convert+quaternion+to+rotation+matrix&summary=1&conversation=08db7af97476b94b8aa5befd40180d7adb0a
+  h->mtx[0][0] = 1.0 - (2.0 * (q22 + q32));
+  h->mtx[0][1] =  2.0 * (q1 * q2  -  q0 * q3);
+  h->mtx[0][2] =  2.0 * (q1 * q3  +  q0 * q2);
+
+  h->mtx[1][0] =  2.0 * (q1 * q2  +  q0 * q3);
+  h->mtx[1][1] = 1.0 - (2.0 * (q12 + q32));
+  h->mtx[1][2] =  2.0 * (q2 * q3  -  q0 * q1);
+  
+  h->mtx[2][0] =  2.0 * (q1 * q3  -  q0 * q2);
+  h->mtx[2][1] =  2.0 * (q2 * q3  +  q0 * q1);
+  h->mtx[2][2] = 1.0 - (2.0 * (q12 + q22));
+#else
   h->mtx[0][0] = (2.0 * (q02 + q12)) -1.0;
   h->mtx[0][1] =  2.0 * (q1 * q2  -  q0 * q3);
   h->mtx[0][2] =  2.0 * (q1 * q3  +  q0 * q2);
@@ -361,6 +376,7 @@ Quat::toRotation ()
   h->mtx[2][0] =  2.0 * (q1 * q3  -  q0 * q2);
   h->mtx[2][1] =  2.0 * (q2 * q3  +  q0 * q2);
   h->mtx[2][2] = (2.0 * (q02 + q32)) -1.0;
+#endif
 
   return h;
 }
@@ -398,6 +414,7 @@ Rotation::show ()
 Quat
 Rotation:: toQuaternion ()
 {
+  getEigens (this);
   double q00 = this->mtx[0][0];
   double q01 = this->mtx[0][1];
   double q02 = this->mtx[0][2];

@@ -28,6 +28,8 @@ using namespace std;
 
 // quat <> mx conversion
 // https://www.johndcook.com/blog/2025/05/07/quaternions-and-rotation-matrices/
+// https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation
+// https://math.stackexchange.com/questions/893984/conversion-of-rotation-matrix-to-quaternion
 
 class Quat;
 

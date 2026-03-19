@@ -3,6 +3,7 @@
      INCS = -I$(HOME)/.local/include/
 #     LIBS = -L $(HOME)/.local/lib64 -lQuat
 #     LIBS = -L . -lQuat
+     LIBS = -lgsl -lgslcblas -lm
   GL_LIBS = -lm -lGL -lGLU -lglut
 
 
@@ -25,14 +26,21 @@ Quat.o: Quat.cc Quat.hh
 rot: rot.o libQuat.so
 	g++ -o $@ $(LDFLAGS) $< $(LIBS)
 
-test: test.o Quat.o
-	g++ -o $@ $(LDFLAGS) $^
+test: test.o Quat.o eigens.o
+	g++ -o $@ $(LDFLAGS) $^ $(LIBS)
+
+test.o: test.cc tests.h
+
+tests.h: tests.m4
+	m4 < $< > $@
+
+#eigen.o: eigen.cc
 
 anim: anim.o
 	g++ -o $@ $(LDFLAGS) $^ $(GL_LIBS)
 
 clean:
-	rm -f *.o *.so
+	rm -f *.o *.so tests.h
 
 veryclean: clean
 	rm -f test

@@ -16,9 +16,12 @@ using namespace std;
 
 Quat r (1, 2, 3, 4);
 Quat s (2, 3, 4, 5);
-double axis[3] = { 1, 0, 0};		// x axis
-Quat x (M_PI_2, axis);
+double axis[3] = { 0, 1, 2};		// x axis
+Quat x (M_PI/4.0, axis);
 
+#if 1
+#include "tests.h"
+#else
 #define TEST(n,f) void test##n () {f}
 
 TEST (01, cout << r << endl;)
@@ -118,6 +121,7 @@ fcn_t fcns[] = {
 };
       
 int nr_opts = sizeof(fcns) / sizeof(fcn_t);
+#endif
             
 int
 main (int ac, char *av[])
@@ -130,7 +134,7 @@ main (int ac, char *av[])
       do_all = true;
       break;
     case 'n':
-      cout << nr_opts << endl;
+      cout << nr_tests << endl;
       return 0;
       break;
     }
@@ -141,14 +145,14 @@ main (int ac, char *av[])
   //  if (optind >= ac) return 0;
 
   if (do_all) {
-    for (int i = 1; i < nr_opts; i++) {
+    for (int i = 1; i < nr_tests; i++) {
       fprintf (stdout, "test %2d: ", i);
       (*fcns[i])();
     }
   }
   else {
     long int wch = strtol (av[optind], nullptr, 10);
-    if (wch < 1 || wch > nr_opts) return 1;
+    if (wch < 1 || wch > nr_tests) return 1;
 
     (*fcns[wch])();
   }
