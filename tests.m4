@@ -67,7 +67,8 @@ entry(cout << x << endl;)
 
 entry(Rotation *v = x.toRotation (); v->show ();)
 entry(Rotation *v = x.toRotation (); cout << v << endl;)
-entry(Rotation *v = x.toRotation (); Quat w = v->toQuaternion (); cout << w << endl;)
+entry(Rotation *v = x.toRotation ();
+      Quat w = v->toQuaternion (); cout << w << endl;)
 
 typedef void (*fcn_t)();
 
