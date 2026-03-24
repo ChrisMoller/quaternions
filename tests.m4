@@ -2,7 +2,7 @@ dnl generator for quat tests
 define(`RQ',`changequote(<,>)dnl`
 'changequote`'')
 dnl start at 1000 just so we don't have to with a null pointer
-define(`offset', 1000)dnl
+define(`offset', 0001)dnl
 define(`cnt',    offset)dnl
 define(`xinc', `define(`$1',incr($1))')dnl
 define(`upcase', `translit($1, `a-z', `A-Z')')dnl

@@ -59,9 +59,10 @@ Quat::Quat (double *v)
 Quat::Quat (double theta, double *v)
 {
   a = cos (theta/2.0);
-  b = v[0];
-  c = v[1];
-  d = v[2];
+  double sintheta = sin (theta/2.0);
+  b = sintheta * v[0];
+  c = sintheta * v[1];
+  d = sintheta * v[2];
 }
 
 Quat::~Quat ()
@@ -338,20 +339,30 @@ Quat::toRotation ()
   Rotation *h = new Rotation;
 
   Quat q = *this;
+#if 1
   q/=+q;			//normalise;
-  double q0 = q.a;		//w 
+#else
+  double mag = sqrt ((q.b * q.b) + (q.c * q.c) + (q.d * q.d));
+  if (mag > 0.0) {
+    q.b /= mag;
+    q.c /= mag;
+    q.d /= mag;
+  }
+#endif
+  
+  double q0 = q.a;		//w r
   double q02 = q0 * q0;
   
-  double q1 = q.b;		//x 
+  double q1 = q.b;		//x i
   double q12 = q1 * q1;
 
-  double q2 = q.c;		//y 
+  double q2 = q.c;		//y j
   double q22 = q2 * q2;
 
-  double q3 = q.d;		//z 
+  double q3 = q.d;		//z k
   double q32 = q3 * q3;
   
-#if 0
+#if 1
   // https://search.brave.com/search?q=convert+quaternion+to+rotation+matrix&summary=1&conversation=08db7af97476b94b8aa5befd40180d7adb0a
   h->mtx[0][0] = 1.0 - (2.0 * (q22 + q32));
   h->mtx[0][1] =  2.0 * (q1 * q2  -  q0 * q3);
@@ -414,7 +425,8 @@ Rotation::show ()
 Quat
 Rotation:: toQuaternion ()
 {
-  getEigens (this);
+  return getEigens (this);
+#if 0
   double q00 = this->mtx[0][0];
   double q01 = this->mtx[0][1];
   double q02 = this->mtx[0][2];
@@ -439,6 +451,7 @@ Rotation:: toQuaternion ()
   double d = sqrt (td) * dsign (q10 - q01) / 2.0;
 
   return Quat (a, b, c, d);
+#endif
 }
 
 void

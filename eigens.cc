@@ -30,6 +30,7 @@
 
 #include <alloca.h>
 
+#include <gsl/gsl_complex_math.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_eigen.h>
 
@@ -51,18 +52,6 @@
 Quat
 getEigens (Rotation *rot)
 {
-  // tr(M) = 2 cos(T) + 1
-  // 2 cos(T) =  tr(M) - 1
-  //   cos(T) = (tr(M) - 1) / 2
-  //       T  = acos ((tr(M) - 1) / 2)
-
-  double trM = 0.0;
-  for (int i = 0; i < 2; i++) trM += rot->mtx[i][i];
-  trM -= 1.0;
-  trM /= 2.0;
-  double T = acos(trM);
-  fprintf(stderr, "\nT = %g\n", R2D (T));
-  
   double *data =
     (double *)alloca (3 * 3 * sizeof(double));
   int i = 0;
@@ -86,55 +75,26 @@ getEigens (Rotation *rot)
 
   gsl_eigen_nonsymmv_sort (eval, evec, GSL_EIGEN_SORT_ABS_DESC);
 
-  /***
-      90 ->    / 180
-      60 -> 45 / 135
-      45 -> 45 / 135
-      30 -> 90
-       0 -> 45 / 135
-   ***/
-
   double q0 = NAN;
   double qa[3] = {NAN, NAN, NAN};
-  double cosf = 1.0;
-  double sinf = 1.0;
   for (int i = 0; i < 3; i++) {
     gsl_vector_complex_view evec_i = gsl_matrix_complex_column (evec, i);
     gsl_complex eval_i = gsl_vector_complex_get (eval, i);
-
-    double realval = GSL_REAL(eval_i);
-    double imagval = GSL_IMAG(eval_i);
-
-    double m = hypot (realval, imagval);
-    double p =  R2D (atan2 (imagval, realval));
-    fprintf (stderr, "\n%g<%g:  ", m, p);
-    //    fprintf (stderr, "\n[%g %g]:  ", realval, imagval);
-    for (int j = 0; j < 3; j++) {
-      gsl_complex z = gsl_vector_complex_get(&evec_i.vector, j);
-      double m = hypot (GSL_REAL(z), GSL_IMAG(z)); 
-      double p =  R2D (atan2 (GSL_IMAG(z), GSL_REAL(z))); 
-      fprintf (stderr, "%g<%g  ", m, p);
-      //      fprintf (stderr, "[%g %g]  ", GSL_REAL(z), GSL_IMAG(z)); 
-    }
-    fprintf (stderr, "\n\n");
-
-    if (i == 0) {
+    
+    if (((fabs (GSL_REAL (eval_i)) - 1.0) < 1e-9) &&
+	(fabs (GSL_IMAG (eval_i)) < 1e-9)) {			// get the eigen vector
       for (int j = 0; j < 3; j++) {
 	gsl_complex z = gsl_vector_complex_get(&evec_i.vector, j);
-	qa[j] = GSL_REAL(z);
+	qa[j] = GSL_REAL (z);
       }
     }
-    if (i == 1) {
-      q0 = atan2 (imagval, realval);
-      //      fprintf (stderr, "q0 %g %g\n", q0, R2D (q0));
-      cosf = cos (q0/2.0);
-      sinf = sin (q0/2.0);
+    else {
+      gsl_complex ang = gsl_complex_log (eval_i);
+      q0 = gsl_complex_abs (ang);
     }
   }
-  for (int i = 0; i < 3; i++)
-    qa[i] *= sinf;
-  Quat q = Quat (cosf, qa);
 
+  Quat q (q0, qa);
   return q;
 }
 

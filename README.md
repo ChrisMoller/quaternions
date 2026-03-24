@@ -65,7 +65,7 @@ invert.
 The above are just what I've found I need, so far, for graphics work, but if anyone needs
 anything else, I'll be glad to add it.
 
-## Simple comparisons
+## Simple vector operations
 
 | operation |     | effect |
 | --------- | --- | ------ |

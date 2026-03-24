@@ -54,6 +54,7 @@ public:
   Quat (double ai);
   Quat (double *v);
   Quat (double theta, double *v);
+  double scalar () {return a;}
   ~Quat ();
 
   Quat 		operator+(Quat v);	// add

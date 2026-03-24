@@ -1,6 +1,6 @@
    CFLAGS = -g
   LDFLAGS =
-     INCS = -I$(HOME)/.local/include/
+     INCS = -I$(HOME)/.local/include/ -I/usr/include/eigen3
 #     LIBS = -L $(HOME)/.local/lib64 -lQuat
 #     LIBS = -L . -lQuat
      LIBS = -lgsl -lgslcblas -lm
@@ -27,6 +27,9 @@ rot: rot.o libQuat.so
 	g++ -o $@ $(LDFLAGS) $< $(LIBS)
 
 test: test.o Quat.o eigens.o
+	g++ -o $@ $(LDFLAGS) $^ $(LIBS)
+
+converts: converts.o Quat.o eigens.o
 	g++ -o $@ $(LDFLAGS) $^ $(LIBS)
 
 test.o: test.cc tests.h
