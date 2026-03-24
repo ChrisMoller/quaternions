@@ -415,6 +415,12 @@ Quat::round (double e)
   return r;
 }
 
+Quat
+Quat::round ()
+{
+  return this->round (1e-9);
+}
+
 void
 Quat::show ()
 {

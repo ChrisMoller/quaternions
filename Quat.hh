@@ -103,6 +103,7 @@ public:
   Rotation	*toRotation ();
 
   Quat		round (double e);	// basically, floor
+  Quat		round ();		// basically, floor
 
   friend ostream& operator<<(ostream& os, const Quat &v);
 

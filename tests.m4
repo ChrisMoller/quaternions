@@ -70,6 +70,9 @@ entry(Rotation *v = x.toRotation (); cout << v << endl;)
 entry(Rotation *v = d.toRotation ();
       Quat w = v->toQuaternion ();
       cout << d << " " << w << " " << (d/w).round(1e-9) << endl;)
+entry(Rotation *v = d.toRotation ();
+      Quat w = v->toQuaternion ();
+      cout << d << " " << w << " " << (d/w).round() << endl;)
 
 typedef void (*fcn_t)();
 
