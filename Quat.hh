@@ -102,6 +102,8 @@ public:
   
   Rotation	*toRotation ();
 
+  Quat		round (double e);	// basically, floor
+
   friend ostream& operator<<(ostream& os, const Quat &v);
 
   void show ();

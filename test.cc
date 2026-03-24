@@ -17,7 +17,9 @@ using namespace std;
 Quat r (1, 2, 3, 4);
 Quat s (2, 3, 4, 5);
 double axis[3] = { 0.0, 0.0, 1.0};		// x axis
+double diag[3] = { 1.0, 1.0, 1.0};		// x axis
 Quat x (M_PI/4.0, axis);
+Quat d (M_PI/4.0, diag);
 
 #include "tests.h"
             

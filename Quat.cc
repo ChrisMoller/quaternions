@@ -339,16 +339,7 @@ Quat::toRotation ()
   Rotation *h = new Rotation;
 
   Quat q = *this;
-#if 1
   q/=+q;			//normalise;
-#else
-  double mag = sqrt ((q.b * q.b) + (q.c * q.c) + (q.d * q.d));
-  if (mag > 0.0) {
-    q.b /= mag;
-    q.c /= mag;
-    q.d /= mag;
-  }
-#endif
   
   double q0 = q.a;		//w r
   double q02 = q0 * q0;
@@ -362,8 +353,6 @@ Quat::toRotation ()
   double q3 = q.d;		//z k
   double q32 = q3 * q3;
   
-#if 1
-  // https://search.brave.com/search?q=convert+quaternion+to+rotation+matrix&summary=1&conversation=08db7af97476b94b8aa5befd40180d7adb0a
   h->mtx[0][0] = 1.0 - (2.0 * (q22 + q32));
   h->mtx[0][1] =  2.0 * (q1 * q2  -  q0 * q3);
   h->mtx[0][2] =  2.0 * (q1 * q3  +  q0 * q2);
@@ -375,19 +364,6 @@ Quat::toRotation ()
   h->mtx[2][0] =  2.0 * (q1 * q3  -  q0 * q2);
   h->mtx[2][1] =  2.0 * (q2 * q3  +  q0 * q1);
   h->mtx[2][2] = 1.0 - (2.0 * (q12 + q22));
-#else
-  h->mtx[0][0] = (2.0 * (q02 + q12)) -1.0;
-  h->mtx[0][1] =  2.0 * (q1 * q2  -  q0 * q3);
-  h->mtx[0][2] =  2.0 * (q1 * q3  +  q0 * q2);
-
-  h->mtx[1][0] =  2.0 * (q1 * q2  +  q0 * q3);
-  h->mtx[1][1] = (2.0 * (q02 + q22)) -1.0;
-  h->mtx[1][2] =  2.0 * (q1 * q3  -  q0 * q1);
-  
-  h->mtx[2][0] =  2.0 * (q1 * q3  -  q0 * q2);
-  h->mtx[2][1] =  2.0 * (q2 * q3  +  q0 * q2);
-  h->mtx[2][2] = (2.0 * (q02 + q32)) -1.0;
-#endif
 
   return h;
 }
@@ -421,37 +397,22 @@ Rotation::show ()
 	   this->mtx[2][0], this->mtx[2][1], this->mtx[2][2]);
 }
 
-#define dsign(v) (signbit (v) ? -1.0 : 1.0)
 Quat
 Rotation:: toQuaternion ()
 {
   return getEigens (this);
-#if 0
-  double q00 = this->mtx[0][0];
-  double q01 = this->mtx[0][1];
-  double q02 = this->mtx[0][2];
-  double q10 = this->mtx[1][0];
-  double q11 = this->mtx[1][1];
-  double q12 = this->mtx[1][2];
-  double q20 = this->mtx[2][0];
-  double q21 = this->mtx[2][1];
-  double q22 = this->mtx[2][2];
+}
 
-  double ta = 1.0 + q00 + q11 + q22;
-  if (ta < 0.0 && fabs (ta) < 1.0e-10) ta = 0.0;
-  double tb = 1.0 + q00 - q11 - q22;
-  if (tb < 0.0 && fabs (tb) < 1.0e-10) tb = 0.0;
-  double tc = 1.0 - q00 + q11 - q22;
-  if (tc < 0.0 && fabs (tc) < 1.0e-10) tc = 0.0;
-  double td = 1.0 - q00 - q11 + q22;
-  if (td < 0.0 && fabs (td) < 1.0e-10) td = 0.0;
-  double a = sqrt (ta) / 2.0;
-  double b = sqrt (tb) * dsign (q21 - q12) / 2.0; //?
-  double c = sqrt (tc) * dsign (q02 - q20) / 2.0;
-  double d = sqrt (td) * dsign (q10 - q01) / 2.0;
+Quat
+Quat::round (double e)
+{
+  Quat r;
+  r.a = (fabs(this->a) < e) ? 0.0 : this->a;
+  r.b = (fabs(this->b) < e) ? 0.0 : this->b;
+  r.c = (fabs(this->c) < e) ? 0.0 : this->c;
+  r.d = (fabs(this->d) < e) ? 0.0 : this->d;
 
-  return Quat (a, b, c, d);
-#endif
+  return r;
 }
 
 void
