@@ -19,6 +19,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/***
+ *   https://en.wikipedia.org/wiki/Quaternion
+ * q = (a, v)
+ * mv = mag (v)
+ * exp (q) =  exp(a) (cos(mv) + (v/mv) sin(mv))
+***/
 //#include "../mtx_config.h"
 
 #include<cmath>

@@ -21,6 +21,7 @@
 #include <string>
 #include <iostream>
 #include <array>
+#include <complex>
 
 #include <stdio.h>
 
@@ -30,6 +31,8 @@ using namespace std;
 // https://www.johndcook.com/blog/2025/05/07/quaternions-and-rotation-matrices/
 // https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation
 // https://math.stackexchange.com/questions/893984/conversion-of-rotation-matrix-to-quaternion
+
+// https://en.wikipedia.org/wiki/Quaternion
 
 class Quat;
 
@@ -104,6 +107,10 @@ public:
 
   Quat		round (double e);	// basically, floor
   Quat		round ();		// basically, floor
+
+  Quat		qexp ();
+  Quat		qln ();
+  Quat		qpow (double x);
 
   friend ostream& operator<<(ostream& os, const Quat &v);
 

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <complex>
 #include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -16,10 +17,14 @@ using namespace std;
 
 Quat r (1, 2, 3, 4);
 Quat s (2, 3, 4, 5);
+Quat u (1, 0, 0, 0);
 double axis[3] = { 0.0, 0.0, 1.0};		// x axis
 double diag[3] = { 1.0, 1.0, 1.0};		// x axis
 Quat x (M_PI/4.0, axis);
 Quat d (M_PI/4.0, diag);
+complex<double> c1(1,0);
+complex<double> c2(2,0);
+complex<double> c25(2.5,0);
 
 #include "tests.h"
             

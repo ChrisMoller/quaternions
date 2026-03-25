@@ -26,7 +26,7 @@ Quat.o: Quat.cc Quat.hh
 rot: rot.o libQuat.so
 	g++ -o $@ $(LDFLAGS) $< $(LIBS)
 
-test: test.o Quat.o eigens.o
+test: test.o Quat.o eigens.o | tests.h
 	g++ -o $@ $(LDFLAGS) $^ $(LIBS)
 
 converts: converts.o Quat.o eigens.o

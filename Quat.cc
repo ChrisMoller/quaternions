@@ -407,10 +407,10 @@ Quat
 Quat::round (double e)
 {
   Quat r;
-  r.a = (fabs(this->a) < e) ? 0.0 : this->a;
-  r.b = (fabs(this->b) < e) ? 0.0 : this->b;
-  r.c = (fabs(this->c) < e) ? 0.0 : this->c;
-  r.d = (fabs(this->d) < e) ? 0.0 : this->d;
+  r.a = (fabs(a) < e) ? 0.0 : a;
+  r.b = (fabs(b) < e) ? 0.0 : b;
+  r.c = (fabs(c) < e) ? 0.0 : c;
+  r.d = (fabs(d) < e) ? 0.0 : d;
 
   return r;
 }
@@ -421,23 +421,91 @@ Quat::round ()
   return this->round (1e-9);
 }
 
+Quat
+Quat::qexp ()
+{
+  double vmag = sqrt (pow (b, 2.0) + pow (c, 2.0) + pow (d, 2.0));
+  double K = exp (a);
+  double A = K * cos (vmag);
+  double B, C, D;
+  if (vmag != 0.0) {
+    double svmag = sin (vmag) / vmag;
+    B = K * svmag * b;
+    C = K * svmag * c;
+    D = K * svmag * d;
+  }
+  else B = C = D = 0.0;
+
+  Quat s (A, B, C, D);
+  return s;
+}
+
+Quat
+Quat::qln ()
+{
+  double qmag = sqrt (pow (a, 2.0) + pow (b, 2.0) +
+		      pow (c, 2.0) + pow (d, 2.0));
+  double A = NAN;
+  double B = NAN;
+  double C = NAN;
+  double D = NAN;
+  if (qmag != 0.0) {
+    double vmag = sqrt (pow (b, 2.0) + pow (c, 2.0) + pow (d, 2.0));
+    if (vmag != 0.0) {
+      double K = acos (a / qmag) / vmag;
+      A = log (qmag);
+      B = K * b;
+      C = K * c;
+      D = K * d;
+    }
+    else {
+      A = log (a);
+      B = 0.0;
+      C = 0.0;
+      D = 0.0;
+    }
+  }
+  Quat s (A, B, C, D);
+  return s;
+}
+
+Quat
+Quat::qpow (double x)
+{
+  double A = NAN;
+  double B = NAN;
+  double C = NAN;
+  double D = NAN;
+  double qmag = sqrt (pow (a, 2.0) + pow (b, 2.0) +
+		      pow (c, 2.0) + pow (d, 2.0));
+  if (qmag != 0.0) {
+    double phi = acos (a/qmag);
+    double K = qmag * sin (phi);
+    double K2 = pow (qmag, x);
+    double cxp = cos (x * phi);
+    double sxp = sin (x * phi);
+    A  = K2 * cxp;
+    if (K != 0.0) {
+      B  = K2 * (b / K) * sxp;
+      C  = K2 * (c / K) * sxp;
+      D  = K2 * (d / K) * sxp;
+    }
+    else B = C = D = 0.0;
+  }
+  else A = B = C = D = 1.0;
+  Quat s (A, B, C, D);
+  return s;
+}
+
 void
 Quat::show ()
 {
-  fprintf (stdout, "[ %g %g %g %g ]\n",
-	   this->a,
-	   this->b,
-	   this->c,
-	   this->d);
+  fprintf (stdout, "[ %g %g %g %g ]\n", a, b, c, d);
 }
 
 void
 Quat::show (string l)
 {
   fprintf (stdout, "%s = [ %g %g %g %g ]\n",
-	   l.c_str (),
-	   this->a,
-	   this->b,
-	   this->c,
-	   this->d);
+	   l.c_str (), a, b, c, d);
 }
