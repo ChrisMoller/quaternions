@@ -8,8 +8,8 @@
 
 using namespace std;
 
-#define D2R(d) (M_PI * (d)/180.0)
-#define R2D(r) (180.0 * (r)/M_PI)
+//#define D2R(d) (M_PI * (d)/180.0)
+//#define R2D(r) (180.0 * (r)/M_PI)
 
 /***
     pca =? least squares/linear regression

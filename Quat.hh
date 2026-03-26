@@ -34,6 +34,9 @@ using namespace std;
 
 // https://en.wikipedia.org/wiki/Quaternion
 
+#define D2R(d) (M_PI * (d)/180.0)
+#define R2D(r) (180.0 * (r)/M_PI)
+
 class Quat;
 
 class Rotation
@@ -58,6 +61,10 @@ public:
   Quat (double *v);
   Quat (double theta, double *v);
   double scalar () {return a;}
+  double W () {return a;}
+  double X () {return b;}
+  double Y () {return c;}
+  double Z () {return d;}
   ~Quat ();
 
   Quat 		operator+(Quat v);	// add

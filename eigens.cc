@@ -51,7 +51,7 @@
 #undef PACKAGE_VERSION
 #undef VERSION
 
-#define R2D(r) (180.0 * (r)/M_PI)
+//#define R2D(r) (180.0 * (r)/M_PI)
 
 // https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation
 

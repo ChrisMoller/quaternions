@@ -79,6 +79,7 @@ entry("   ln",cout << r << " " << r.qln() << endl;)
 entry(" unln",cout << r << " " << (r.qln()).qexp() << endl;)
 entry(" qpow",cout << r << " " << r.qpow(1.0) << endl;)
 entry(" qpow",cout << r << " " << r * r << " " << r.qpow(2.0) << endl;)
+entry("uqpow",cout << r << " " << r * r << " " << (r.qpow(2.0)).qpow(.5) << endl;)
 entry(" qpow",cout << r << " " << r.qpow(3.5) << endl;)
 entry(" qpow",cout << u << " " << u.qpow(3) << endl;)
 
