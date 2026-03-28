@@ -1,8 +1,8 @@
-
 #include <GL/glut.h>
 #include <vector>
-#include "cubeverts.h"
 #include "Quat.hh"
+
+#include "cubeverts.h"
 
 extern GLdouble axes[][3];
 

@@ -45,20 +45,22 @@ anim: anim.o
 anim1: anim1.o Quat.o eigens.o
 	g++ -o $@ $(LDFLAGS) $^ $(LIBS) $(GL_LIBS)
 
-anim2:  anim2.o Quat.o eigens.o cube.o
+anim2:  anim2.o Quat.o eigens.o cube.o icosahedron.o
 	g++ -o $@ $(LDFLAGS) $^ $(LIBS) $(GL_LIBS)
 
-anim2.o: anim2.cc icosahedron.h
+anim2.o: anim2.cc
 
 cube.o: cube.cc cubeverts.h cube.hh
 
-icosahedron.h : genIcosahedron
+icosahedron.cc : genIcosahedron
 	./genIcosahedron >$@
+
+icosahedron.o: icosahedron.cc
 
 genIcosahedron: genIcosahedron.c
 
 clean:
-	rm -f *.o *.so tests.h icosahedron.h
+	rm -f *.o *.so tests.h icosahedronverts.h
 
 veryclean: clean
 	rm -f test rot genIcosahedron

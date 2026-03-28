@@ -14,7 +14,7 @@
 #define OFFSET 0.0
 
 #include "cube.hh"
-#include "icosahedron.h"
+#include "icosahedron.hh"
 
 using namespace std;
 
@@ -73,7 +73,8 @@ void display(void) {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  draw_cube (ang, axisIndex);
+  //  draw_cube (ang, axisIndex);
+  draw_icosahedron (ang, axisIndex);
 
   if (ffmpeg) {
     void *buffer = malloc (sizeof(int) * width * height);
