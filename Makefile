@@ -45,6 +45,9 @@ anim: anim.o
 anim1: anim1.o Quat.o eigens.o
 	g++ -o $@ $(LDFLAGS) $^ $(LIBS) $(GL_LIBS)
 
+anim2: anim2.o Quat.o eigens.o
+	g++ -o $@ $(LDFLAGS) $^ $(LIBS) $(GL_LIBS)
+
 clean:
 	rm -f *.o *.so tests.h
 
