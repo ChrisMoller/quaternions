@@ -13,11 +13,62 @@ vector<Quat> cube = {
   Quat (0, -0.4, -0.4,  0.4)     // left  upper front
 };
 
+enum {
+  VTX_LLR,
+  VTX_RLR,
+  VTX_RUR,
+  VTX_LUR,
+  VTX_LLF,
+  VTX_RLF,
+  VTX_RUF,
+  VTX_LUF
+};
+
 extern GLdouble axes[][3];
+
+#if 0
+static double
+getDir (int leg1, int corner, int leg2)
+{
+  Quat z_axis (0, 0, 0, 1);
+  Quat cpa = cube[leg1] - cube[corner];
+  Quat cpb = cube[leg2] - cube[corner];
+  Quat cpx = cpa.qcross (cpb);
+  return cpx.qdot (z_axis);
+}
+#endif
+
+/***
+                 LUR                    RUR
+               /|¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯/|
+              / |                    / |
+             /  |   top             /  |
+            /   |                  /   |
+       LUF /____|_________________/RUF |
+           |    |                 |    |
+           |    |        back     |    |
+           |left|                 | rgt|
+           |    |                 |    |
+           |    |_LLR____________ |___ | RLR
+           |   /                  |   /
+           |  /                   |  /
+           | /      bottom        | /
+       LLF |/                     |/ RLF
+           ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+***/
 
 void
 draw_cube (GLdouble ang, int axisIndex)
 {
+#if 0
+  cout << "back   " << getDir (VTX_LLR, VTX_LUR, VTX_RUR) << endl;
+  cout << "front  " << getDir (VTX_LLF, VTX_RLF, VTX_LUF) << endl;
+  cout << "bottom " << getDir (VTX_LLR, VTX_RLR, VTX_RLF) << endl;
+  cout << "top    " << getDir (VTX_LUR, VTX_RUR, VTX_RUF) << endl;
+  cout << "left   " << getDir (VTX_LUR, VTX_LLR, VTX_LLF) << endl;
+  cout << "right  " << getDir (VTX_RLR, VTX_RUR, VTX_RUF) << endl;
+#endif
+
   Quat rotator (ang, axes[axisIndex]);
   vector<Quat> rr = rotator.qrot (cube);
 
@@ -30,15 +81,23 @@ draw_cube (GLdouble ang, int axisIndex)
 #define RIGHT_UPPER_FRONT rr[6].X (),  rr[6].Y (), rr[6].Z ()
 #define LEFT__UPPER_FRONT rr[7].X (),  rr[7].Y (), rr[7].Z ()
 
-  glBegin (GL_QUADS);
+  glBegin (GL_QUADS);			// back
   glColor3f (1.0f, 0.0f, 0.0f);
   glVertex3d (LEFT__LOWER_REAR);
-  glVertex3d (RIGHT_LOWER_REAR);
-  glVertex3d (RIGHT_UPPER_REAR);
   glVertex3d (LEFT__UPPER_REAR);
+  glVertex3d (RIGHT_UPPER_REAR);
+  glVertex3d (RIGHT_LOWER_REAR);
+  glEnd ();
+  
+  glBegin (GL_QUADS);			// front
+  glColor3f (1.0f, 0.0f, 0.0f);
+  glVertex3d (LEFT__LOWER_FRONT);
+  glVertex3d (RIGHT_LOWER_FRONT);
+  glVertex3d (RIGHT_UPPER_FRONT);
+  glVertex3d (LEFT__UPPER_FRONT);
   glEnd ();
 
-  glBegin (GL_QUADS);
+  glBegin (GL_QUADS);			// bottom
   glColor3f (0.0f, 1.0f, 0.0f);
   glVertex3d (LEFT__LOWER_REAR);
   glVertex3d (RIGHT_LOWER_REAR);
@@ -46,7 +105,7 @@ draw_cube (GLdouble ang, int axisIndex)
   glVertex3d (LEFT__LOWER_FRONT);
   glEnd ();
 
-  glBegin (GL_QUADS);
+  glBegin (GL_QUADS);			//  top
   glColor3f (1.0f, 0.0f, 1.0f);
   glVertex3d (LEFT__UPPER_REAR);
   glVertex3d (RIGHT_UPPER_REAR);
@@ -54,15 +113,15 @@ draw_cube (GLdouble ang, int axisIndex)
   glVertex3d (LEFT__UPPER_FRONT);
   glEnd ();
 
-  glBegin (GL_QUADS);
+  glBegin (GL_QUADS);			//  left
   glColor3f (0.0f, 0.0f, 1.0f);
-  glVertex3d (LEFT__LOWER_REAR);
   glVertex3d (LEFT__UPPER_REAR);
-  glVertex3d (LEFT__UPPER_FRONT);
+  glVertex3d (LEFT__LOWER_REAR);
   glVertex3d (LEFT__LOWER_FRONT);
+  glVertex3d (LEFT__UPPER_FRONT);
   glEnd ();
 
-  glBegin (GL_QUADS);
+  glBegin (GL_QUADS);			// right
   glColor3f (1.0f, 1.0f, 0.0f);
   glVertex3d (RIGHT_LOWER_REAR);
   glVertex3d (RIGHT_UPPER_REAR);

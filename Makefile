@@ -37,8 +37,6 @@ test.o: test.cc tests.h
 tests.h: tests.m4
 	m4 < $< > $@
 
-#eigen.o: eigen.cc
-
 anim: anim.o
 	g++ -o $@ $(LDFLAGS) $^ $(GL_LIBS)
 
@@ -50,7 +48,7 @@ anim2:  anim2.o Quat.o eigens.o cube.o icosahedron.o
 
 anim2.o: anim2.cc
 
-cube.o: cube.cc cubeverts.h cube.hh
+cube.o: cube.cc cube.hh
 
 icosahedron.cc : genIcosahedron
 	./genIcosahedron >$@
@@ -60,7 +58,7 @@ icosahedron.o: icosahedron.cc
 genIcosahedron: genIcosahedron.c
 
 clean:
-	rm -f *.o *.so tests.h icosahedronverts.h
+	rm -f *.o *.so tests.h 
 
 veryclean: clean
 	rm -f test rot genIcosahedron

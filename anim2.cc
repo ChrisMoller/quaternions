@@ -51,6 +51,9 @@ FILE* ffmpeg = nullptr;
 
 #define TIMERSECS 100
 
+typedef void (*drawit) (GLdouble ang, int axisIndex);
+drawit func = draw_cube;
+
 void animate(int value) {
   glutTimerFunc(TIMERSECS, animate, 1); // Re-register timer
   ang += inc;
@@ -73,8 +76,9 @@ void display(void) {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  (*func) (ang, axisIndex);
   //  draw_cube (ang, axisIndex);
-  draw_icosahedron (ang, axisIndex);
+  //draw_icosahedron (ang, axisIndex);
 
   if (ffmpeg) {
     void *buffer = malloc (sizeof(int) * width * height);
@@ -92,12 +96,13 @@ int main(int ac, char *av[]) {
       {"height",    required_argument, 0,  'h' },
       {"video",     required_argument, 0,  'v' },
       {"axis",      required_argument, 0,  'a' },
+      {"shape",     required_argument, 0,  's' },
       {0,           0,                 0,   0 }
     };
 
     int c;
     int option_index = 0;
-    while (-1 != (c = getopt_long (ac, av, "w:h:v:a:",
+    while (-1 != (c = getopt_long (ac, av, "w:h:v:a:s:",
 				   long_options, &option_index))) {
       switch (c) {
       case 'w': width  = atoi (optarg); break;
@@ -123,6 +128,16 @@ int main(int ac, char *av[]) {
 	  break;
 	}
 	break;
+      case 's':
+	switch (*optarg) {
+	case 'c':
+	  func = draw_cube;
+	  break;
+	case 'i':
+	  func = draw_icosahedron;
+	  break;
+	}
+	break;
       }
     }
     if (vidout) {
@@ -138,6 +153,9 @@ int main(int ac, char *av[]) {
   glutInit (&ac, av);
   glutInitWindowSize (width, height);
   glutInitDisplayMode (GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+  //  glFrontFace(GL_CW);
+  glFrontFace(GL_CCW);
+  glEnable(GL_CULL_FACE);
   glEnable (GL_DEPTH_TEST);
   glDepthMask (GL_TRUE);
   glDepthFunc (GL_LESS);

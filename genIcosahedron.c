@@ -84,9 +84,9 @@ getcross (double *cp, int i)
   cp[1] = v1[2] * v2[0] - v1[0] * v2[2];
   cp[2] = v1[0] * v2[1] - v1[1] * v2[0];
 
-  avg_y += icosahedron[ix0][1];		// y coords
-  avg_y += icosahedron[ix1][1];
-  avg_y += icosahedron[ix2][1];
+  avg_y += icosahedron[ix0][2];		// z coords
+  avg_y += icosahedron[ix1][2];
+  avg_y += icosahedron[ix2][2];
   return avg_y / 3.0;
 }
 	  
