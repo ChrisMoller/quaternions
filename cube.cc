@@ -2,7 +2,16 @@
 #include <vector>
 #include "Quat.hh"
 
-#include "cubeverts.h"
+vector<Quat> cube = {
+  Quat (0, -0.4,  0.4, -0.4),	// left  lower rear
+  Quat (0,  0.4,  0.4, -0.4),	// right lower rear
+  Quat (0,  0.4, -0.4, -0.4),	// right upper rear
+  Quat (0, -0.4, -0.4, -0.4),	// left  upper rear
+  Quat (0, -0.4,  0.4,  0.4),    // left  lower front
+  Quat (0,  0.4,  0.4,  0.4),    // right lower front
+  Quat (0,  0.4, -0.4,  0.4),    // right upper front
+  Quat (0, -0.4, -0.4,  0.4)     // left  upper front
+};
 
 extern GLdouble axes[][3];
 
